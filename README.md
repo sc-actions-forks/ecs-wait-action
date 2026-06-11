@@ -12,13 +12,13 @@ The ECS cluster that contains your services.
 
 ### `ecs-services`
 
-**Required** - _string[]_\
-A list of ECS services to make sure are stable.
+_Optional_ - _string[]_\
+A list of ECS services to make sure are stable. e.g. '["service1","service2"]'. Defaults to all services within cluster.
 
-### `retries`
+### `max-timeout-mins`
 
 _Optional_ - _integer_\
-The number of times you want to try the stability check. Default `2`.
+The number of minutes to wait trying the stability check. Default `20`.
 
 ### `aws-access-key-id`
 
@@ -48,7 +48,12 @@ Whether to print verbose debug messages to the console. Default `false`.
 ### `retries`
 
 _integer_\
-How many retries happened until success.
+How many retries happened until success. Each retry is at most 10 mins.
+
+### `time-taken-secs`
+
+_integer_\
+How many seconds elapased.
 
 ## Example usage
 
@@ -62,7 +67,7 @@ with:
   aws-region: us-east-1
   ecs-cluster: my-ecs-cluster
   ecs-services: '["my-ecs-service-1", "my-ecs-service-2"]'
-  retries: 5
+  max-timeout-mins: 15
   verbose: false
 ```
 
@@ -72,5 +77,4 @@ with:
 uses: oryanmoshe/ecs-wait-action@v1.3
 with:
   ecs-cluster: my-ecs-cluster
-  ecs-services: '["my-ecs-service-1", "my-ecs-service-2"]'
 ```

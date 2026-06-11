@@ -6,11 +6,11 @@ inputs:
     description: 'The ECS cluster name (string)'
     required: true
   ecs-services:
-    description: 'List of ECS services to wait for (string[])'
-    required: true
-  retries:
-    description: 'How many times to retry the 10 minute wait (integer)'
-    default: 2
+    description: 'List of ECS services to wait for (Json parseable string to type string[]). Else it will wait for all services in the cluster'
+    required: false
+  max-timeout-mins:
+    description: 'Maximum time to wait for the service to stabilize in minutes (integer)'
+    default: '20'
   aws-access-key-id:
     description: 'The AWS_ACCESS_KEY_ID (string)'
   aws-secret-access-key:
@@ -19,12 +19,14 @@ inputs:
     description: 'The AWS_REGION (string)'
   verbose:
     description: 'Whether to print the retry log (bool)'
-    default: false
+    default: 'false'
 outputs:
   retries:
     description: 'How many retries happened until success (integer)'
+  time-taken-secs:
+    description: 'How long it took to stabilize the service(s) in seconds.'
 runs:
-  using: 'node12'
+  using: 'node20'
   main: 'dist/index.js'
 branding:
   icon: 'clock'
