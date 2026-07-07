@@ -8,12 +8,12 @@
     "build": "esbuild --bundle --minify --platform=node src/index.ts --outfile=dist/index.js"
   },
   "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@aws-sdk/client-ecs": "^3.797.0"
+    "@actions/core": "^3.0.1",
+    "@aws-sdk/client-ecs": "^3.1078.0"
   },
   "devDependencies": {
-    "@types/node": "^22.15.3",
-    "esbuild": "^0.25.3",
-    "typescript": "^5.8.3"
+    "@types/node": "^22.20.0",
+    "esbuild": "^0.28.1",
+    "typescript": "^5.9.3"
   }
 }
