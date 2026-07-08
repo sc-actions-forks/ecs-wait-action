@@ -26,8 +26,8 @@ outputs:
   time-taken-secs:
     description: 'How long it took to stabilize the service(s) in seconds.'
 runs:
-  using: 'node20'
+  using: 'node24'
   main: 'dist/index.js'
 branding:
   icon: 'clock'
-  color: 'purple'
+  color: 'orange'
