@@ -9,8 +9,8 @@ type Params = {
   ecsConnection: ECSClient;
 };
 
-const waitForStability = async (params: Params,maxWaitTime: number) =>
-  waitUntilServicesStable({client: params.ecsConnection, maxWaitTime},{ cluster: params.cluster, services: params.services });
+const waitForStability = async (params: Params, maxWaitTime: number) =>
+  waitUntilServicesStable({ client: params.ecsConnection, maxWaitTime }, { cluster: params.cluster, services: params.services });
 
 const customWait = async (params:Params) => {
   const maxTimeoutSecs = params.maxTimeoutMins * 60;
@@ -24,7 +24,17 @@ const customWait = async (params:Params) => {
       if (params.verbose) {
         console.info(`Waiting for service stability, try #${currTry}`);
       }
-      let res = await waitForStability(params, thisTimeoutSecs);
+      let res;
+      try {
+        res = await waitForStability(params, thisTimeoutSecs);
+      } catch (error) {
+        if (error.name === 'TimeoutError') {
+          timeTakenSecs = (Date.now() - startTime) / 1000;
+          thisTimeoutSecs = Math.floor(Math.min(600, maxTimeoutSecs - timeTakenSecs));
+          continue;
+        }
+        throw error;
+      }
       if (res.state === 'SUCCESS') {
         console.info('Services are stable!');
         isStable = true;
